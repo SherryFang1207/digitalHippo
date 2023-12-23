@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
+import Cart from "../layout/Cart";
 
 export default function RightNavBar({ user }: { user: null }) {
   return (
@@ -45,7 +46,9 @@ export default function RightNavBar({ user }: { user: null }) {
           </div>
         )}
 
-        <div className="ml-4 flow-root lg:ml-6">{/* <Cart /> */}</div>
+        <div className="ml-4 flow-root lg:ml-6">
+          <Cart />
+        </div>
       </div>
     </div>
   );
