@@ -17,7 +17,9 @@ if (!cached) {
 interface Args {
   initOptions?: Partial<InitOptions>;
 }
-export async function getPayloadClient({ initOptions }: Args) {
+export async function getPayloadClient({
+  initOptions,
+}: Args = {}): Promise<Payload> {
   // Verify PAYLOAD_SECRET for sign-in
   if (!process.env.PAYLOAD_SECRET) {
     throw new Error("PAYLOAD_SECRET is missing");
@@ -33,13 +35,14 @@ export async function getPayloadClient({ initOptions }: Args) {
       local: initOptions?.express ? false : true,
       ...(initOptions || {}),
     });
-    try {
-      cached.client = await cached.promise;
-    } catch (e: unknown) {
-      cached.promise = null;
-      throw e;
-    }
-
-    return cached.client;
   }
+
+  try {
+    cached.client = await cached.promise;
+  } catch (e: unknown) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.client;
 }
