@@ -15,10 +15,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "@/trpc/client";
 
-const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
-  //send data to the server
-  // mutate({ email, password });
-};
 export default function Page() {
   const {
     register,
@@ -27,9 +23,14 @@ export default function Page() {
   } = useForm<TAuthCredentialsValidator>({
     resolver: zodResolver(AuthCredentialsValidator),
   });
-  const { data } = trpc.anyApiRoute.useQuery();
-  console.log(data);
+  // Abstract the mutate function from Payload and let mutate function do the Payload update
+  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({});
 
+  const onSubmit = ({ email, password }: TAuthCredentialsValidator) => {
+    //send data to the server
+    console.log("Submitting new sign-up data...");
+    mutate({ email, password });
+  };
   return (
     <>
       <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
